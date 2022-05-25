@@ -8,103 +8,107 @@
  *
  *******************************************************/
 
-Menu::Menu() = default;
+Menu::Menu() {
 
-bool Menu::initSolar(JNIEnv *env, jobject obj) {
-
-    if(env != nullptr && obj != nullptr) {
-
-        if(!checkExc(env)) {
-
-            solarEnv    = env;
-            solarObject = obj;
-
-        }
-
-        return true;
-
-    }
-
-    return false;
+    this->_env = nullptr;
+    this->_object = nullptr;
 
 }
 
-bool Menu::checkExc(JNIEnv *env) {
+Menu::Menu(JNIEnv *env, jobject obj) {
 
-    if(env->ExceptionCheck()) {
+    this->_env = env;
+    this->_object = obj;
 
-        env->ExceptionDescribe();
-        env->ExceptionClear();
+}
 
-        return true;
+bool Menu::isValid() {
 
-    }
-
-    return false;
+    return (_env != nullptr && _object != nullptr);
 
 }
 
 void Menu::addSpace(int space) {
 
-    jclass solarClass     = solarEnv->GetObjectClass(solarObject);
-    jmethodID solarMethod = solarEnv->GetMethodID(solarClass, "addSpace", "(I)V");
+    if(isValid()) {
 
-    solarEnv->CallVoidMethod(solarObject, solarMethod, space);
+        jclass solarClass     = _env->GetObjectClass(_object);
+        jmethodID solarMethod = _env->GetMethodID(solarClass, "addSpace", "(I)V");
 
-    solarEnv->DeleteLocalRef(solarClass);
+        _env->CallVoidMethod(_object, solarMethod, space);
+
+        _env->DeleteLocalRef(solarClass);
+
+    }
 
 }
 
 void Menu::addText(const char *text) {
 
-    jstring solarText     = solarEnv->NewStringUTF(text);
+    if(isValid()) {
 
-    jclass solarClass     = solarEnv->GetObjectClass(solarObject);
-    jmethodID solarMethod = solarEnv->GetMethodID(solarClass, "addText", "(Ljava/lang/String;)V");
+        jstring solarText     = _env->NewStringUTF(text);
 
-    solarEnv->CallVoidMethod(solarObject, solarMethod, solarText);
+        jclass solarClass     = _env->GetObjectClass(_object);
+        jmethodID solarMethod = _env->GetMethodID(solarClass, "addText", "(Ljava/lang/String;)V");
 
-    solarEnv->DeleteLocalRef(solarText);
-    solarEnv->DeleteLocalRef(solarClass);
+        _env->CallVoidMethod(_object, solarMethod, solarText);
+
+        _env->DeleteLocalRef(solarText);
+        _env->DeleteLocalRef(solarClass);
+
+    }
 
 }
 
 void Menu::addSwitch(const char *text, void *toggle) {
 
-    jstring solarText     = solarEnv->NewStringUTF(text);
+    if(isValid()) {
 
-    jclass solarClass     = solarEnv->GetObjectClass(solarObject);
-    jmethodID solarMethod = solarEnv->GetMethodID(solarClass, "addSwitch", "(Ljava/lang/String;J)V");
+        jstring solarText     = _env->NewStringUTF(text);
 
-    solarEnv->CallVoidMethod(solarObject, solarMethod, solarText, (jlong) toggle);
+        jclass solarClass     = _env->GetObjectClass(_object);
+        jmethodID solarMethod = _env->GetMethodID(solarClass, "addSwitch", "(Ljava/lang/String;J)V");
 
-    solarEnv->DeleteLocalRef(solarText);
-    solarEnv->DeleteLocalRef(solarClass);
+        _env->CallVoidMethod(_object, solarMethod, solarText, (jlong) toggle);
+
+        _env->DeleteLocalRef(solarText);
+        _env->DeleteLocalRef(solarClass);
+
+    }
 
 }
 
 void Menu::addSeekBar(int min, int max, int *value) {
 
-    jclass solarClass     = solarEnv->GetObjectClass(solarObject);
-    jmethodID solarMethod = solarEnv->GetMethodID(solarClass, "addSeekbar", "(IIJ)V");
+    if(isValid()) {
 
-    solarEnv->CallVoidMethod(solarObject, solarMethod, min, max, (jlong) value);
+        jclass solarClass     = _env->GetObjectClass(_object);
+        jmethodID solarMethod = _env->GetMethodID(solarClass, "addSeekbar", "(IIJ)V");
 
-    solarEnv->DeleteLocalRef(solarClass);
+        _env->CallVoidMethod(_object, solarMethod, min, max, (jlong) value);
+
+        _env->DeleteLocalRef(solarClass);
+
+    }
 
 }
 
 void Menu::addButton(const char *text, void *callback) {
 
-    jstring solarText     = solarEnv->NewStringUTF(text);
+    if(isValid()) {
 
-    jclass solarClass     = solarEnv->GetObjectClass(solarObject);
-    jmethodID solarMethod = solarEnv->GetMethodID(solarClass, "addButton", "(Ljava/lang/String;J)V");
+        jstring solarText     = _env->NewStringUTF(text);
 
-    solarEnv->CallVoidMethod(solarObject, solarMethod, solarText, (jlong) callback);
+        jclass solarClass     = _env->GetObjectClass(_object);
+        jmethodID solarMethod = _env->GetMethodID(solarClass, "addButton", "(Ljava/lang/String;J)V");
 
-    solarEnv->DeleteLocalRef(solarText);
-    solarEnv->DeleteLocalRef(solarClass);
+        _env->CallVoidMethod(_object, solarMethod, solarText, (jlong) callback);
+
+        _env->DeleteLocalRef(solarText);
+        _env->DeleteLocalRef(solarClass);
+
+    }
 
 }
 
@@ -122,7 +126,7 @@ void Menu::toast(const char *text) {
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_solar_kitten_menu_ui_SolarSwitch_ChangeSwitch(JNIEnv *solarEnv, jobject solarObject, jlong pointer) {
+Java_com_solar_kitten_menu_ui_SolarSwitch_ChangeBool(JNIEnv *_env, jobject _object, jlong pointer) {
 
     long solarPointer = (long) pointer;
     bool* solarBool = (bool *) solarPointer;
@@ -132,24 +136,17 @@ Java_com_solar_kitten_menu_ui_SolarSwitch_ChangeSwitch(JNIEnv *solarEnv, jobject
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_solar_kitten_menu_ui_SolarSlider_ChangeInt(JNIEnv *solarEnv, jobject solarObject, jlong pointer, jint number) {
+Java_com_solar_kitten_menu_ui_SolarSlider_ChangeInt(JNIEnv *_env, jobject _object, jlong pointer, jint number) {
 
     long solarPointer = (long) pointer;
     int* solarInteger = (int *) solarPointer;
     *solarInteger = number;
 
 }
+
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_solar_kitten_menu_ui_listener_SolarOnClickListener_OnClick(JNIEnv *solarEnv, jobject solarObject, jlong peer) {
-
-    auto solarFunction = (std::function<void(void)>*) peer;
-    (*solarFunction)();
-
-}
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_solar_kitten_menu_ui_listener_SolarOnClickListener_Release(JNIEnv *solarEnv, jobject solarObject, jlong peer) {
+Java_com_solar_kitten_menu_ui_listener_SolarOnClickListener_Callback(JNIEnv *_env, jobject _object, jlong peer) {
 
     auto solarFunction = (std::function<void(void)>*) peer;
     (*solarFunction)();

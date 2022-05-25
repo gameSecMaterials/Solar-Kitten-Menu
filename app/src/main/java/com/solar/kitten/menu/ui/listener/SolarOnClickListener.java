@@ -3,6 +3,7 @@ package com.solar.kitten.menu.ui.listener;
 import android.view.View;
 
 public class SolarOnClickListener implements View.OnClickListener {
+
     public final long nativePeer;
 
     public SolarOnClickListener(final long nativePeer) {
@@ -11,16 +12,14 @@ public class SolarOnClickListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        OnClick(nativePeer);
+        Callback(nativePeer);
     }
 
     @Override
     public void finalize() {
-        Release(nativePeer);
+        Callback(nativePeer);
     }
 
-    public native void OnClick(final long peer);
-
-    public native void Release(final long peer);
+    public native void Callback(final long peer);
 
 }

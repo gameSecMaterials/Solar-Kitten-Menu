@@ -2,7 +2,7 @@
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_com_solar_kitten_menu_Menu_getData(JNIEnv *env, jobject solarObject) {
+Java_com_solar_kitten_menu_Menu_getData(JNIEnv *env, jobject) {
 
     jobjectArray solarArray;
 
@@ -25,37 +25,33 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_solar_kitten_menu_Menu_solarModules(JNIEnv *solarEnv, jobject solarObject) {
 
-    auto *solar = new Menu();
+    auto solar = Menu(solarEnv, solarObject);
 
-    if(solar->initSolar(solarEnv, solarObject)) {
+    solar.addText("JNI Text");
 
-        solar->addText("JNI Text");
+    solar.addSwitch("JNI Toggle 1", &Solar::Modules::m_bToggle);
+    solar.addSwitch("JNI Toggle 2", &Solar::Modules::m_bToggle_);
+    solar.addSwitch("JNI Toggle 3", &Solar::Modules::m_bToggle__);
 
-        solar->addSwitch("JNI Toggle 1", &Solar::Modules::m_bToggle);
-        solar->addSwitch("JNI Toggle 2", &Solar::Modules::m_bToggle_);
-        solar->addSwitch("JNI Toggle 3", &Solar::Modules::m_bToggle__);
+    solar.addText("JNI Slider 1");
+    solar.addSeekBar(0, 5, &Solar::Modules::m_bSeekBar);
 
-        solar->addText("JNI Slider 1");
-        solar->addSeekBar(0, 5, &Solar::Modules::m_bSeekBar);
+    solar.addText("JNI Slider 2");
+    solar.addSeekBar(0, 15, &Solar::Modules::m_bSeekBar_);
 
-        solar->addText("JNI Slider 2");
-        solar->addSeekBar(0, 15, &Solar::Modules::m_bSeekBar_);
+    solar.addButton("Log Values", new std::function<void(void)>([] {
 
-        solar->addButton("Log Values", new std::function<void(void)>([] {
+        LOGI("Solar Kitten");
 
-            LOGI("Solar Kitten");
+        LOGI("JNI Toggle 1 - %d", Solar::Modules::m_bToggle);
+        LOGI("JNI Toggle 2 - %d", Solar::Modules::m_bToggle_);
+        LOGI("JNI Toggle 3 - %d", Solar::Modules::m_bToggle__);
 
-            LOGI("JNI Toggle 1 - %d", Solar::Modules::m_bToggle);
-            LOGI("JNI Toggle 2 - %d", Solar::Modules::m_bToggle_);
-            LOGI("JNI Toggle 3 - %d", Solar::Modules::m_bToggle__);
+        LOGI("JNI Slider 1 - %d", Solar::Modules::m_bSeekBar);
+        LOGI("JNI Slider 2 - %d", Solar::Modules::m_bSeekBar_);
 
-            LOGI("JNI Slider 1 - %d", Solar::Modules::m_bSeekBar);
-            LOGI("JNI Slider 2 - %d", Solar::Modules::m_bSeekBar_);
+        LOGI("---------------------------------------------------");
 
-            LOGI("---------------------------------------------------");
-
-        }));
-
-    }
-
+    }));
+    
 }

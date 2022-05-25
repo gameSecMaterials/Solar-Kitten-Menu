@@ -9,6 +9,7 @@ import android.widget.Switch;
 public class SolarSwitch extends Switch {
 
     private final long nativePeer;
+    private boolean init;
 
     public SolarSwitch(Context context, long pointer) {
         super(context);nativePeer = pointer;
@@ -26,13 +27,16 @@ public class SolarSwitch extends Switch {
     public void setChecked(boolean checked) {
         super.setChecked(checked);
         if(nativePeer != 0 && init) {
-            ChangeSwitch(nativePeer);
+
+            ChangeBool(nativePeer);
+
         } else {
+
             init = true;
+
         }
 
     }
 
-    private native void ChangeSwitch(long pointer);
-    private boolean init;
+    private native void ChangeBool(long pointer);
 }

@@ -2,6 +2,7 @@ package com.solar.kitten.menu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
@@ -231,10 +232,6 @@ public class Menu {
         return params;
     }
 
-    private native void solarModules();
-
-    private native String[] getData();
-
     private int getResID(String name, String type) {
         return solarContext.getResources().getIdentifier(name, type, solarContext.getPackageName());
     }
@@ -242,5 +239,10 @@ public class Menu {
     private int getID(String name) {
         return getResID(name, "id");
     }
+
+    private native void solarModules();
+
+    private native String[] getData();
+
 
 }

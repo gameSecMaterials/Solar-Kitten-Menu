@@ -15,16 +15,16 @@ class Menu {
 
 private:
 
-    JNIEnv *solarEnv{};
-    jobject solarObject{};
+    JNIEnv *_env{};
+    jobject _object{};
 
 public:
 
     Menu();
 
-    bool initSolar(JNIEnv *solarEnv, jobject solarObject);
+    Menu(JNIEnv *env, jobject obj);
 
-    static bool checkExc(JNIEnv* env);
+    bool isValid();
 
     void addSpace(int space);
 
