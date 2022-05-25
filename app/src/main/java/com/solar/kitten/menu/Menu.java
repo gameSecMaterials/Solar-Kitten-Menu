@@ -39,17 +39,16 @@ public class Menu {
 
     public void show() {
 
-        Context renderContext                = getContext();
         String[] solarData                   = getData();
 
-        floatingView                         = LayoutInflater.from(renderContext).inflate(getResID(renderContext, "activity_floating", "layout"), null);
+        floatingView                         = LayoutInflater.from(solarContext).inflate(getResID("activity_floating", "layout"), null);
 
-        View floater                         = floatingView.findViewById(getID(renderContext, "floater_container"));
-        View menu                            = floatingView.findViewById(getID(renderContext, "menu_container"));
-        patches                              = floatingView.findViewById(getID(renderContext, "patches"));
-        WebView webView                      = floatingView.findViewById(getID(renderContext, "webv"));
-        TextView mClose                      = floatingView.findViewById(getID(renderContext, "mclose"));
-        TextView mStop                       = floatingView.findViewById(getID(renderContext, "mstop"));
+        View floater                         = floatingView.findViewById(getID("floater_container"));
+        View menu                            = floatingView.findViewById(getID("menu_container"));
+        patches                              = floatingView.findViewById(getID("patches"));
+        WebView webView                      = floatingView.findViewById(getID("webv"));
+        TextView mClose                      = floatingView.findViewById(getID("mclose"));
+        TextView mStop                       = floatingView.findViewById(getID("mstop"));
 
         windowManager                        = solarActivity.getWindowManager();
 
@@ -145,11 +144,7 @@ public class Menu {
         solarModules();
 
     }
-
-    private Context getContext() {
-        return solarContext;
-    }
-
+    
     private void addSpace(int space) {
         View separator = new View(solarContext);
         LinearLayout.LayoutParams params = setParams();
@@ -238,14 +233,14 @@ public class Menu {
 
     private native void solarModules();
 
-    public static native String[] getData();
+    private native String[] getData();
 
-    private int getResID(Context ctx, String name, String type) {
-        return ctx.getResources().getIdentifier(name, type, ctx.getPackageName());
+    private int getResID(String name, String type) {
+        return solarContext.getResources().getIdentifier(name, type, solarContext.getPackageName());
     }
 
-    private int getID(Context ctx, String name) {
-        return getResID(ctx, name, "id");
+    private int getID(String name) {
+        return getResID(name, "id");
     }
 
 }

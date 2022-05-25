@@ -2,7 +2,7 @@
 
 extern "C"
 JNIEXPORT jobjectArray JNICALL
-Java_com_solar_kitten_menu_Menu_getData(JNIEnv *env, jclass) {
+Java_com_solar_kitten_menu_Menu_getData(JNIEnv *env, jobject solarObject) {
 
     jobjectArray solarArray;
 

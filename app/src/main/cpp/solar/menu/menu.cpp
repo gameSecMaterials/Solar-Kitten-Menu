@@ -114,6 +114,12 @@ void Menu::addSpinner(const char *text, std::vector<const char *> features, int 
 
 }
 
+void Menu::toast(const char *text) {
+
+    //TODO: JNI Toast Implementation
+
+}
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_solar_kitten_menu_ui_SolarSwitch_ChangeSwitch(JNIEnv *solarEnv, jobject solarObject, jlong pointer) {

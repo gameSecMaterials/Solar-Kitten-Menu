@@ -38,6 +38,6 @@ public:
 
     void addSpinner(const char* text, std::vector<const char*> features, int* index, void* methodPointer = nullptr);
 
-    void Toast(const char *text);
+    void toast(const char *text);
 
 };

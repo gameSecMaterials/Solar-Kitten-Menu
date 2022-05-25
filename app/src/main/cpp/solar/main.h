@@ -2,7 +2,7 @@
 
 #include <jni.h>
 
-#include "jni/menu.h"
+#include "menu/menu.h"
 #include "log/logger.h"
 
 namespace Solar {
